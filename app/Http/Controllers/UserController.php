@@ -7,21 +7,29 @@ use App\Acount;
 
 class UserController extends Controller
 {
+    public function respondWithJson($data,$message,$statuscode)
+    {
+        return response()->json([
+            'message' => $message,
+            'statuscode' => $statuscode,
+            'data' => $data,
+        ]);
+    }
+    
 	  public function login(Request $request){
         if($request->has('email') && $request->has('password')){
             $email = $request->email;
             $password = $request->password;
 
-            if($email != null && $password != null){
-                $table = Acount::where([['email','=',$email],['password','=',md5($password)]])->get();
-                echo json_encode($table[0]);
-                
-            }else{
-                echo "Data not null";
-            }
-
+             $count = Acount::where([['email','=',$email],['password','=',md5($password)]])->count();
+             $table = Acount::where([['email','=',$email],['password','=',md5($password)]])->get();
+             if($count>0){
+                 return $this->respondWithJson($table,"Susscess",200);
+             }else{
+                 return $this->respondWithJson($table,"account incorrect",300);
+             }
         }else{
-            echo "No send data";
+            return $this->respondWithJson($table,"No send data",300);
         }
     }
 
@@ -30,13 +38,12 @@ class UserController extends Controller
                 $email = $request->email;
                 $password = $request->password;
 
-                if($email != null && $password != null){
                     $table = Acount::where('email','=',$email)->update(["password"=>md5($password)]);
-                    echo md5($password);
-                    
-                }else{
-                    echo "Data not null";
-                }
+                    if($table){
+                        echo md5($password);
+                    }else{
+                        echo "Update Err";
+                    }
 
             }else{
                 echo "No send data";
@@ -60,25 +67,39 @@ class UserController extends Controller
 
             $check = $request->check;
             if($check == 0){
-                $table = new Acount();
-                $table->fullname = $fullname;
-                $table->email = $email;
-                $table->heights = $heights;
-                $table->weights= $weights;
-                $table->age = $age;
-                $table->dayofbirth = $dayofbirth;
-                $table->sex = $sex;
-                $table->password = md5($password);
-                $table->status = 0;
-                $table->save();
+                $count = Acount::where('email',$email)->count();
+                $table = Acount::where('email',$email)->get();
+                if($count>0){
+                    return $this->respondWithJson($table,"Email already exists",300); 
+                }else{
+                    $table = new Acount();
+                    $table->fullname = $fullname;
+                    $table->email = $email;
+                    $table->heights = $heights;
+                    $table->weights= $weights;
+                    $table->age = $age;
+                    $table->dayofbirth = $dayofbirth;
+                    $table->sex = $sex;
+                    $table->password = md5($password);
+                    $table->status = 0;
+                    $table->save();
+                    $data= [$table];
+                    return $this->respondWithJson($data,"Register Susscess",200); 
+                }
                 
-                echo json_encode($table); 
             }else{
                 $table = Acount::where("email",'=',$email)->update(['fullname'=>$fullname,'email'=>$email,'heights'=>$heights, 'weights'=>$weights, 'age'=>$age, 'dayofbirth'=>$dayofbirth, 'sex'=>$sex]);
-                $table = Acount::where('email','=',$email)->get();
-                echo json_encode($table[0]); 
+                if($table){
+                    $table = Acount::where('email','=',$email)->get();
+                    return $this->respondWithJson($table,"Update Susscess",200);  
+                }else{
+                    $table = Acount::where('email','=',$email)->get();
+                    return $this->respondWithJson($table,"Update Err",300);
+                }
+                 
             
             }		
+        
     			
     	}else{
     		echo "null";
