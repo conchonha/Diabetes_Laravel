@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th8 09, 2020 lúc 04:28 AM
--- Phiên bản máy phục vụ: 10.4.11-MariaDB
--- Phiên bản PHP: 7.2.30
+-- Thời gian đã tạo: Th12 14, 2020 lúc 12:45 PM
+-- Phiên bản máy phục vụ: 10.4.14-MariaDB
+-- Phiên bản PHP: 7.2.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,6 +24,33 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `health_information`
+--
+
+CREATE TABLE `health_information` (
+  `id` int(11) NOT NULL,
+  `heights` int(11) NOT NULL,
+  `weights` int(11) NOT NULL,
+  `bloodPressure` int(11) NOT NULL,
+  `bloodSugar` int(11) NOT NULL,
+  `CPR` int(11) NOT NULL,
+  `HDL_C` int(11) NOT NULL,
+  `LDL_C` int(11) NOT NULL,
+  `time` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `id_user` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `health_information`
+--
+
+INSERT INTO `health_information` (`id`, `heights`, `weights`, `bloodPressure`, `bloodSugar`, `CPR`, `HDL_C`, `LDL_C`, `time`, `id_user`) VALUES
+(12, 0, 0, 0, 0, 0, 0, 0, '2020-12-14', 3),
+(14, 12, 21, 12, 21, 12, 21, 21, '2020-12-14', 3);
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `menu`
 --
 
@@ -33,6 +60,7 @@ CREATE TABLE `menu` (
   `id_user` int(20) DEFAULT NULL,
   `namefood` varchar(255) DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
+  `gam` int(11) NOT NULL,
   `day` date DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
@@ -41,19 +69,11 @@ CREATE TABLE `menu` (
 -- Đang đổ dữ liệu cho bảng `menu`
 --
 
-INSERT INTO `menu` (`id`, `id_mold`, `id_user`, `namefood`, `image`, `day`, `status`) VALUES
-(3, 2, 2, 'com chua ca loc', 'img/k33GQrSxct1LCG5.jpg', '2020-07-09', NULL),
-(4, 1, 2, 'com ca ro phi chien xu', NULL, '2020-07-09', NULL),
-(5, 1, 2, 'com chua', 'img/NSOeQxBZ3X7Sobf.jpg', '2020-07-09', NULL),
-(6, 1, 2, 'cafe', 'img/TZvjgyed01Gqtt9.jpg', '2020-07-09', NULL),
-(8, 1, 9, 'mon ăn mới', NULL, '2020-07-10', NULL),
-(10, 1, 9, 'món ăn bổ ích', 'img/hTm2g8IGBebsasR.jpg', '2020-07-09', NULL),
-(12, 1, 9, 'lon nuoc', 'img/UsSXLqM7wWn6nFt.jpg', '2020-07-10', NULL),
-(13, 1, 9, 'cafe', 'img/2Il3ERsFx6WbuHE.jpg', '2020-07-10', NULL),
-(14, 2, 9, 'cafe', 'img/1ymibiq5TgxubNI.jpg', '2020-07-10', NULL),
-(15, 3, 9, 'buoi tối ăn gì đây', 'img/iCXleT50kDa8XM2.jpg', '2020-07-10', NULL),
-(16, 2, 11, 'buoi trua', NULL, '2020-07-10', NULL),
-(17, 2, 12, 'buoi trua', NULL, '2020-07-10', NULL);
+INSERT INTO `menu` (`id`, `id_mold`, `id_user`, `namefood`, `image`, `gam`, `day`, `status`) VALUES
+(22, 2, 13, '食事の名前', NULL, 15, '2020-11-14', NULL),
+(23, 1, 13, '食事の名前', NULL, 15, '2020-11-14', NULL),
+(24, 1, 13, '食事の名前', 'img/EkufjYKytpMeYIf.jpg', 15, '2020-11-14', NULL),
+(25, 1, 13, '食事の名前', NULL, 15, '2020-11-14', NULL);
 
 -- --------------------------------------------------------
 
@@ -102,8 +122,6 @@ CREATE TABLE `user` (
   `id` int(20) NOT NULL,
   `fullname` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `heights` double(5,2) DEFAULT NULL,
-  `weights` double(5,2) DEFAULT NULL,
   `age` int(5) DEFAULT NULL,
   `dayofbirth` date DEFAULT NULL,
   `sex` tinyint(1) DEFAULT NULL,
@@ -115,20 +133,20 @@ CREATE TABLE `user` (
 -- Đang đổ dữ liệu cho bảng `user`
 --
 
-INSERT INTO `user` (`id`, `fullname`, `email`, `heights`, `weights`, `age`, `dayofbirth`, `sex`, `password`, `status`) VALUES
-(2, 'thai ba sang', 'hbhnb', 16.00, 50.00, 21, '1999-08-08', 1, '3e758be1e926d731aa912498c3883886', 0),
-(3, 'khoa', 'quachhongkhoa.it@gmail.com', 177.00, 88.00, 22, '2006-08-15', 0, '25d55ad283aa400af464c76d713c07ad', 0),
-(6, 'thaibasang', 'kzumi2110@gmail.com', 40.00, 25.00, 90, '2019-08-08', 0, 'bbdac1061f8d4f9daf46bbf664e63923', 0),
-(7, 'Quỷ Lệ', 'ysusu@gmail.com', 25.00, 25.00, 57, '2019-08-08', 0, '2f6524480fff4078a677bfc73c28eb3e', 0),
-(8, 'thaibasang', 'kzumi2110@gmail.com', 30.00, 30.00, 30, '2019-08-08', 1, '202cb962ac59075b964b07152d234b70', 0),
-(9, 'minh nguyen', 'minhnguyen@gmail.com', 25.00, 25.00, 21, '2019-08-08', 0, 'c7e21648cd47a15aada9818af9fca059', 0),
-(10, 'test', 'tesst@gmail.com', 25.00, 25.00, 18, '2019-08-09', 0, 'bbdac1061f8d4f9daf46bbf664e63923', 0),
-(11, 'thaibasang', 'kmk', 25.00, 25.00, 20, '2018-08-09', 0, 'bbdac1061f8d4f9daf46bbf664e63923', 0),
-(12, 'thai ba sang', 'thaibasang8@gmail.com', 21.00, 22.00, 21, '2018-08-09', 0, 'bbdac1061f8d4f9daf46bbf664e63923', 0);
+INSERT INTO `user` (`id`, `fullname`, `email`, `age`, `dayofbirth`, `sex`, `password`, `status`) VALUES
+(3, 'khoa', 'quachhongkhoa.it@gmail.com', 22, '2006-08-15', 0, '25d55ad283aa400af464c76d713c07ad', 0),
+(13, 'Nguyễn Trọng ViVi', 'thaibasang8@gmail.com', 21, '1999-08-08', 0, 'a2505162af430dcdf773ed6a10861833', 0);
 
 --
 -- Chỉ mục cho các bảng đã đổ
 --
+
+--
+-- Chỉ mục cho bảng `health_information`
+--
+ALTER TABLE `health_information`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_id_user_health_information` (`id_user`);
 
 --
 -- Chỉ mục cho bảng `menu`
@@ -162,10 +180,16 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT cho bảng `health_information`
+--
+ALTER TABLE `health_information`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
 -- AUTO_INCREMENT cho bảng `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT cho bảng `mold`
@@ -183,11 +207,17 @@ ALTER TABLE `number_of_steps`
 -- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
 --
+
+--
+-- Các ràng buộc cho bảng `health_information`
+--
+ALTER TABLE `health_information`
+  ADD CONSTRAINT `fk_id_user_health_information` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `menu`

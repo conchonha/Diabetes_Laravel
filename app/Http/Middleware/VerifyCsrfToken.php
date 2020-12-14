@@ -13,6 +13,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
          'http://localhost/diabetes_laravel/public/*',
-         'http://192.168.2.111/diabetes_laravel/public/*'
+         'http://192.168.1.4/diabetes_laravel/public/*'
     ];
 }

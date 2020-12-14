@@ -34,7 +34,7 @@ class MenuController extends Controller
 		$id_mold = $request->id_mold;
 		$id_user = $request->id_user;
 		if($id_mold != null && $id_user != null){
-			$table = Menu::select('menu.id','menu.id_mold','menu.id_user','menu.namefood','menu.image','menu.day','menu.status')->join('mold','menu.id_mold','=','mold.id')->where([['menu.id_mold','=',$id_mold],['menu.id_user','=',$id_user]])->get();
+			$table = Menu::select('menu.id','menu.id_mold','menu.id_user','menu.namefood','menu.image','menu.gam','menu.day','menu.status')->join('mold','menu.id_mold','=','mold.id')->where([['menu.id_mold','=',$id_mold],['menu.id_user','=',$id_user]])->get();
 			echo json_encode($table);
 		}else{
 			echo "err data null";
@@ -46,6 +46,7 @@ class MenuController extends Controller
     	$id_user = $request->id_user;
     	$namefood = $request->namefood;
     	$image = $request->image;
+    	$gam = $request->gam;
     	$day = $request->day;
     	$dataImage = "";
     	$check = $request->check;
@@ -59,7 +60,7 @@ class MenuController extends Controller
     		$image = $foder;
     	}
 
-    	if(empty($id_mold) || empty($id_user) || empty($namefood) || empty($day)){
+    	if(empty($id_mold) || empty($id_user) || empty($namefood) || empty($gam) || empty($day)){
     		echo "Null";
     	}else{
     		if($check == 0){
@@ -68,11 +69,12 @@ class MenuController extends Controller
 	    		$table ->id_user = $id_user;
 	    		$table ->namefood = $namefood;
 	    		$table ->image = $image;
+	    		$table ->gam = $gam;
 	    		$table ->day = $day;
 	    		$table->save();
 	    		echo "Sussces";
     		}else{
-    			$table = Menu::where('id',$id_menu)->update(['namefood'=>$namefood,'image'=>$image,'day'=>$day,'id_mold'=>$id_mold]);
+    			$table = Menu::where('id',$id_menu)->update(['namefood'=>$namefood,'image'=>$image,'gam'=>$gam,'day'=>$day,'id_mold'=>$id_mold]);
     			echo "Sussces";
     		}
     		

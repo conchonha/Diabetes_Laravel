@@ -54,13 +54,11 @@ class UserController extends Controller
 
      public function register(Request $request)
     {
-    	if($request->has('fullname') && $request->has('email') && $request->has('password') && $request->has('heights') && $request->has('weights') && $request->has('age') && $request->has('dayofbirth') && $request->has('sex') && $request->has('check')){
+    	if($request->has('fullname') && $request->has('email') && $request->has('password') && $request->has('age') && $request->has('dayofbirth') && $request->has('sex') && $request->has('check')){
 
             $fullname = $request->fullname;
             $email = $request->email;
             $password = $request->password;
-            $heights = $request->heights;
-            $weights = $request->weights;
             $age = $request->age;
             $dayofbirth = $request->dayofbirth;
             $sex = $request->sex;
@@ -75,8 +73,6 @@ class UserController extends Controller
                     $table = new Acount();
                     $table->fullname = $fullname;
                     $table->email = $email;
-                    $table->heights = $heights;
-                    $table->weights= $weights;
                     $table->age = $age;
                     $table->dayofbirth = $dayofbirth;
                     $table->sex = $sex;
@@ -88,16 +84,10 @@ class UserController extends Controller
                 }
                 
             }else{
-                $table = Acount::where("email",'=',$email)->update(['fullname'=>$fullname,'email'=>$email,'heights'=>$heights, 'weights'=>$weights, 'age'=>$age, 'dayofbirth'=>$dayofbirth, 'sex'=>$sex]);
-                if($table){
-                    $table = Acount::where('email','=',$email)->get();
-                    return $this->respondWithJson($table,"Update Susscess",200);  
-                }else{
-                    $table = Acount::where('email','=',$email)->get();
-                    return $this->respondWithJson($table,"Update Err",300);
-                }
-                 
-            
+
+                $table = Acount::where("email",'=',$email)->update(['fullname'=>$fullname,'age'=>$age,'dayofbirth'=>$dayofbirth, 'sex'=>$sex]);
+                $table = Acount::where('email','=',$email)->get();
+                return $this->respondWithJson($table,"Update Susscess",200);  
             }		
         
     			

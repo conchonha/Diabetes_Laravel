@@ -22,3 +22,18 @@ Route::group(['prefix'=>'Menu'],function(){
 
 	Route::get("getDataFoodOffer","MenuController@getDataFoodOffer");
 });
+
+Route::group(['prefix' => 'HealthInformation'], function() {
+
+    Route::post('insert', 'HealthInformationController@insert');
+
+    Route::get('getAll', 'HealthInformationController@getAll');
+
+    Route::get('getLastHealthInformation', 'HealthInformationController@getLastHealthInformation');
+
+    Route::post('getObjectHealthInformation', 'HealthInformationController@getObjectHealthInformation');
+
+    Route::post('deleteObject', 'HealthInformationController@deleteObject');
+
+
+});
