@@ -35,5 +35,6 @@ Route::group(['prefix' => 'HealthInformation'], function() {
 
     Route::post('deleteObject', 'HealthInformationController@deleteObject');
 
+    Route::get('getBloodPressureChart', 'HealthInformationController@getBloodPressureChart');
 
 });

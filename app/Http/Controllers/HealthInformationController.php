@@ -52,6 +52,10 @@ class HealthInformationController extends Controller
 	 	echo json_encode(HealthInformation::all());
 	 }
 
+	 public function getBloodPressureChart(){
+	 	return HealthInformation::orderBy('health_information.id','desc')->take(6)->get();
+	 }
+
 	 public function deleteObject(Request $request){
 	 	$table = HealthInformation::where('time','=',$request->date)->delete();
 	 	if($table){
